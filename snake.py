@@ -38,6 +38,8 @@ dis_width = bg_width*3
 dis_height = bg_height*3
 dis = pygame.display.set_mode((dis_width, dis_height))
 pygame.display.set_caption('Game Sờ Nách')
+
+
 # #load dau
 head_img_goc=pygame.image.load(r"image\daurong.png")
 
@@ -145,6 +147,7 @@ def gameLoop(sl_bom):
     current_direction=[-1.0,-1.0]
     Score =0
     Score_big_food=0
+    Speed_Score=0
     game_over = False
     game_close = False
     Snake1=Snake(10,4)
@@ -188,15 +191,15 @@ def gameLoop(sl_bom):
         keys = pygame.key.get_pressed()
         
         #tăng tốc
-        if keys[pygame.K_k]and Snake1.Length_of_snake>1:
+        if keys[pygame.K_k]and Snake1.Length_of_snake>1 and Score>1:
             game_speed=60
-            # if Speed_Score==15:
-            #     Score-=1
-            #     Speed_Score=0
-            #     del Snake1.snake_list[0]
-            #     Snake1.Length_of_snake-=1
-            # else:
-            #     Speed_Score+=1
+            if Speed_Score==25:
+                Score-=1
+                Speed_Score=0
+                del Snake1.snake_list[0]
+                Snake1.Length_of_snake-=1
+            else:
+                Speed_Score+=1
         else:
             game_speed=30
         #Di chuyển
@@ -298,7 +301,9 @@ def gameLoop(sl_bom):
         
         if len(Snake1.snake_list) > Snake1.Length_of_snake:
             del Snake1.snake_list[0]
-        # #cắn trúng đuôi
+
+        
+        #  #cắn trúng đuôi
         # for x in Snake1.snake_list[:-1]:
         #     if x == snake_Head:
         #         game_close = True
