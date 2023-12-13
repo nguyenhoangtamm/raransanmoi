@@ -15,7 +15,7 @@ green = (0, 255, 0)
 blue = (50, 153, 213)
 color_list=[white,yellow,green,blue,red]
 
-#Tạo hướng
+#Tạo hướng di chuyển
 LEFT=270.0
 RIGHT=90.0
 UP=0.0
