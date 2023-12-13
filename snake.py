@@ -3,6 +3,7 @@ import random
 import math
 import sys
 
+kiemtra=0
 #khởi tạo
 pygame.init()
 pygame.mixer.init()
@@ -63,7 +64,7 @@ font_style = pygame.font.Font("font\\aachenb.ttf", 25)
 background_sound=pygame.mixer.Sound(r"sound\background_sound.mp3")
 sound=pygame.mixer.Sound(r"sound\eat.mp3")
 sound_belch=pygame.mixer.Sound(r"sound\eat_belch.mp3")
-lost_sonud=pygame.mixer.Sound(r"sound\lost_sound.mp3")
+lost_sound=pygame.mixer.Sound(r"sound\lost_sound.mp3")
 
 #class snake
 class Snake:
@@ -97,14 +98,14 @@ class Snake:
 def our_snake(snake_block, snake_list,current_direction):
     global head_img
     global angle
-    head_rect=head_img.get_rect(center=(snake_list[len(snake_list)-1]))
+    head_rect=head_img.get_rect(center=(snake_list[len(snake_list)-2]))
     #angle = current_direction[1]-current_direction[0]
     angle +=(current_direction[0]-current_direction[1])
     angle=angle%360
     rotated_head  = pygame.transform.rotate( head_img , angle)
     rotated_rect = rotated_head.get_rect(center=head_rect.center)
     dis.blit(rotated_head,(rotated_rect.topleft))
-    for x in snake_list[:-4]:
+    for x in snake_list[:-5]:
         pygame.draw.circle(dis, yellow,( x[0], x[1]), snake_block,0)
 
 #Hàm hiển thị chữ
@@ -141,6 +142,7 @@ class bom:
 def gameLoop(sl_bom):
     global head_img
     global angle
+    lost_sound_play=False
     head_img=head_img_goc
     angle=0
     background_sound.play(-1)
@@ -162,6 +164,10 @@ def gameLoop(sl_bom):
     while not game_over:
         #sự kiện game over
         while game_close == True:
+            if not lost_sound_play:
+                lost_sound.play()
+                lost_sound_play=True
+            
             background_sound.stop()
             coor= [dis_width / 6, dis_height / 3]
             message("Bạn đã thua!\n Nhấn C-Chơi lại\n Q-Trở về Menu", white, coor)
@@ -173,10 +179,15 @@ def gameLoop(sl_bom):
                     if event.key == pygame.K_q:
                         game_over = True
                         game_close = False
-                        menu()
+                        return
+                        
+                        
                         
                     elif event.key == pygame.K_c:
                         gameLoop(sl_bom)
+                        game_over=True
+                        game_close=False
+                        return
                 if event.type==pygame.QUIT:
                     game_over=True
                     game_close=False
@@ -254,7 +265,7 @@ def gameLoop(sl_bom):
 
         if Snake1.x >= dis_width or Snake1.x < 0 or Snake1.y >= dis_height or Snake1.y < 0:
             game_close = True
-            lost_sonud.play()
+            
 
         #cập nhật tọa độ thay đổi
         Snake1.change()
@@ -331,16 +342,20 @@ def gameLoop(sl_bom):
             distance=math.sqrt((Snake1.x-b.x)**2+(Snake1.y-b.y)**2)
             if distance<((Snake1.snake_block)*(0.5)+b.size):
                 game_close=True
-                lost_sonud.play()
+                lost_sound.play()
 
         
         message(f"Điểm: {Score}", red,[0,0])
         pygame.display.update()
 
         clock.tick(game_speed)
-    pygame.quit()
+    
     
 def menu():
+    global kiemtra
+    kiemtra+=1
+    print(kiemtra)
+
     play_easy=font_style.render("Chơi dễ",True,white)
     play_easy_rect=play_easy.get_rect(center=(200,130))
     play_medium=font_style.render("Chơi Trung bình",True,white)
@@ -357,7 +372,8 @@ def menu():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running=False
-                break
+                sys.exit()
+                
                 
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button==1:
                 cursor_position = pygame.mouse.get_pos()
@@ -366,16 +382,16 @@ def menu():
                 if cursor_rect.colliderect(play_easy_rect):
                     
                     gameLoop(5)
-                    return
+                    continue
                 elif cursor_rect.colliderect(play_medium_rect):
                     
                     gameLoop(10)
-                    return
+                    continue
 
                 elif cursor_rect.colliderect(play_hard_rect):
                     
                     gameLoop(30)
-                    return
+                    continue
                 elif cursor_rect.colliderect(button_exit_rect):
                     sys.exit()
 
