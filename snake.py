@@ -3,7 +3,6 @@ import random
 import math
 import sys
 
-kiemtra=0
 #khởi tạo
 pygame.init()
 pygame.mixer.init()
@@ -353,8 +352,6 @@ def gameLoop(sl_bom):
     
 def menu():
     global kiemtra
-    kiemtra+=1
-    print(kiemtra)
 
     play_easy=font_style.render("Chơi dễ",True,white)
     play_easy_rect=play_easy.get_rect(center=(200,130))
