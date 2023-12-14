@@ -37,11 +37,11 @@ bg_width,bg_height=background.get_size()
 dis_width = bg_width*3
 dis_height = bg_height*3
 dis = pygame.display.set_mode((dis_width, dis_height))
-pygame.display.set_caption('Game Sờ Nách')
+pygame.display.set_caption('Game Rắn Săn Mồi')
 
 
 # #load dau
-head_img_goc=pygame.image.load(r"image\daurong.png")
+head_img_goc=pygame.image.load(r"image\dauran.png")
 
 
 head_img_goc=pygame.transform.scale(head_img_goc,(45,45))
