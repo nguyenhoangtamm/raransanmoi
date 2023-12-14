@@ -214,44 +214,44 @@ def gameLoop(sl_bom):
             game_speed=30
         #Di chuyển
         
-        if ((keys[pygame.K_LEFT] and keys[pygame.K_UP])or(keys[pygame.K_a] and keys[pygame.K_w]))and current_direction[1]!=RIGHT_DOWN :
+        if ((keys[pygame.K_a] and keys[pygame.K_w]))and current_direction[1]!=RIGHT_DOWN :
             Snake1.x_change = -Snake1.speed/math.sqrt(2)
             Snake1.y_change = -Snake1.speed/math.sqrt(2)
             current_direction[0]=current_direction[1]
             current_direction[1]=LEFT_UP
-        elif ((keys[pygame.K_LEFT] and keys[pygame.K_DOWN])or(keys[pygame.K_a] and keys[pygame.K_s])and current_direction[1]!=RIGHT_UP):
+        elif ((keys[pygame.K_a] and keys[pygame.K_s])and current_direction[1]!=RIGHT_UP):
             Snake1.x_change = -Snake1.speed/math.sqrt(2)
             Snake1.y_change = +Snake1.speed/math.sqrt(2)
             current_direction[0]=current_direction[1]
             current_direction[1]=LEFT_DOWN
-        elif ((keys[pygame.K_RIGHT] and keys[pygame.K_UP]) or(keys[pygame.K_d] and keys[pygame.K_w]))and current_direction[1]!=LEFT_DOWN:
+        elif ((keys[pygame.K_d] and keys[pygame.K_w]))and current_direction[1]!=LEFT_DOWN:
             Snake1.x_change = +Snake1.speed/math.sqrt(2)
             Snake1.y_change = -Snake1.speed/math.sqrt(2)
             current_direction[0]=current_direction[1]
             current_direction[1]=RIGHT_UP
-        elif ((keys[pygame.K_RIGHT] and keys[pygame.K_DOWN])or(keys[pygame.K_d] and keys[pygame.K_s])and current_direction[1]!= LEFT_UP):
+        elif ((keys[pygame.K_d] and keys[pygame.K_s])and current_direction[1]!= LEFT_UP):
             Snake1.x_change = +Snake1.speed/math.sqrt(2)
             Snake1.y_change = +Snake1.speed/math.sqrt(2)
             current_direction[0]=current_direction[1]
             current_direction[1]=RIGHT_DOWN
         
         
-        elif (keys[pygame.K_UP]or keys[pygame.K_w])and current_direction[1]!=DOWN:
+        elif ( keys[pygame.K_w])and current_direction[1]!=DOWN:
             Snake1.y_change = -Snake1.speed
             Snake1.x_change = 0
             current_direction[0]=current_direction[1]
             current_direction[1]=UP
-        elif (keys[pygame.K_RIGHT]or keys[pygame.K_d]and current_direction[1]!=LEFT):
+        elif ( keys[pygame.K_d]and current_direction[1]!=LEFT):
             Snake1.x_change = Snake1.speed
             Snake1.y_change = 0
             current_direction[0]=current_direction[1]
             current_direction[1]=RIGHT
-        elif( keys[pygame.K_DOWN]or keys[pygame.K_s])and current_direction[1]!=UP:
+        elif( keys[pygame.K_s])and current_direction[1]!=UP:
             Snake1.y_change = Snake1.speed
             Snake1.x_change = 0
             current_direction[0]=current_direction[1]
             current_direction[1]=DOWN
-        elif (keys[pygame.K_LEFT] or keys[pygame.K_a])and current_direction[1]!=RIGHT:
+        elif (keys[pygame.K_a])and current_direction[1]!=RIGHT:
             Snake1.x_change = -Snake1.speed
             Snake1.y_change = 0
             current_direction[0]=current_direction[1]
@@ -313,10 +313,10 @@ def gameLoop(sl_bom):
             del Snake1.snake_list[0]
 
         
-        #  #cắn trúng đuôi
-        # for x in Snake1.snake_list[:-1]:
-        #     if x == snake_Head:
-        #         game_close = True
+         #cắn trúng đuôi
+        for x in Snake1.snake_list[:-10]:
+            if x == snake_Head:
+                game_close = True
                 
         
         #vẽ rắn
