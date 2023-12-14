@@ -53,10 +53,9 @@ bom_img=pygame.transform.scale(bom_img,(40,40))
 
 clock = pygame.time.Clock()
 #cac tham so
-snake_block = 10
 game_speed = 60
 
- 
+#font
 font_style = pygame.font.Font("font\\aachenb.ttf", 25)
 
 # sound
@@ -98,7 +97,6 @@ def our_snake(snake_block, snake_list,current_direction):
     global head_img
     global angle
     head_rect=head_img.get_rect(center=(snake_list[len(snake_list)-2]))
-    #angle = current_direction[1]-current_direction[0]
     angle +=(current_direction[0]-current_direction[1])
     angle=angle%360
     rotated_head  = pygame.transform.rotate( head_img , angle)
@@ -123,12 +121,12 @@ class food:
         else:
             self.size=Small
             self.color=random.choice(color_list)
-        self.x=round(random.randrange(snake_block, dis_width - self.size) )
-        self.y=round(random.randrange(snake_block, dis_height - self.size) )
+        self.x=round(random.randrange(self.size, dis_width - self.size) )
+        self.y=round(random.randrange(self.size, dis_height - self.size) )
             
             
     
-    
+#class bom
 class bom:
     def __init__(self):
         self.size=10
@@ -349,7 +347,7 @@ def gameLoop(sl_bom):
 
         clock.tick(game_speed)
     
-    
+#ham menu
 def menu():
     global kiemtra
 
