@@ -36,9 +36,13 @@ background=pygame.transform.scale(background,(((bg_width-9)//10*10),((bg_height-
 bg_width,bg_height=background.get_size()
 dis_width = bg_width*3
 dis_height = bg_height*3
+#ten tro choi
 dis = pygame.display.set_mode((dis_width, dis_height))
 pygame.display.set_caption('Game Rắn Săn Mồi')
+#icon game
 
+icon_game=pygame.image.load(r"image\icon.jpg")
+pygame.display.set_icon(icon_game)
 
 # #load dau
 head_img_goc=pygame.image.load(r"image\dauran.png")
