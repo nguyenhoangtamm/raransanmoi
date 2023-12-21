@@ -297,7 +297,7 @@ def gameLoop(sl_bom):
         
         if len(List_Bom)<sl_bom:
             Bom=bom()
-            if (Bom.x!=Snake1.x and Bom.y!=Snake1.y):
+            if ((Bom.x<Snake1.x-2*Bom.size or Bom.x>Snake1.x+2*Bom.size) and (Bom.y<Snake1.y-2*Bom.size or Bom.y>Snake1.y+2*Bom.size)):
                 List_Bom.append(Bom)
         #ve bom
         for b in List_Bom:
@@ -353,10 +353,9 @@ def gameLoop(sl_bom):
     
 #ham menu
 def menu():
-    global kiemtra
 
     play_easy=font_style.render("Chơi dễ",True,white)
-    play_easy_rect=play_easy.get_rect(center=(200,130))
+    play_easy_rect=play_easy.get_rect(center=(dis_width/2,dis_height/2))
     play_medium=font_style.render("Chơi Trung bình",True,white)
     play_medium_rect=play_medium.get_rect(center=(200,160))
 
@@ -404,6 +403,7 @@ def menu():
         dis.blit(background,(0,bg_height*2))
         dis.blit(background,(bg_width,bg_height*2))
         dis.blit(background,(bg_width*2,bg_height*2))
+        
         dis.blit(play_easy,play_easy_rect)
         dis.blit(play_medium,play_medium_rect)
         dis.blit(play_hard,play_hard_rect)
