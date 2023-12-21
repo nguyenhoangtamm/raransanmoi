@@ -36,17 +36,22 @@ background=pygame.transform.scale(background,(((bg_width-9)//10*10),((bg_height-
 bg_width,bg_height=background.get_size()
 dis_width = bg_width*3
 dis_height = bg_height*3
+#load background menu
+bg_menu=pygame.image.load(r"image\backgroundmenu.jpg")
+bg_menu=pygame.transform.scale(bg_menu,(dis_width,dis_height))
+#background lost
+bg_lost=pygame.transform.scale(bg_menu,(200,270))
+
 #ten tro choi
 dis = pygame.display.set_mode((dis_width, dis_height))
 pygame.display.set_caption('Game Rắn Săn Mồi')
-#icon game
 
+#icon game
 icon_game=pygame.image.load(r"image\icon.jpg")
 pygame.display.set_icon(icon_game)
 
 # #load dau
 head_img_goc=pygame.image.load(r"image\dauran.png")
-
 
 head_img_goc=pygame.transform.scale(head_img_goc,(45,45))
 head_img=head_img_goc
@@ -93,7 +98,6 @@ class Snake:
             self.y = ((dis_height/2)-9)//10*10+dis_height/2
 
     def change(self):
-        
         self.y += (self.y_change +self.y_speed)
         self.x += (self.x_change +self.x_speed)
 #hàm vẽ rắn
@@ -121,24 +125,19 @@ class food:
             self.size=Big
             self.color=random.choice(color_list)
             
-            
         else:
             self.size=Small
             self.color=random.choice(color_list)
         self.x=round(random.randrange(self.size, dis_width - self.size) )
         self.y=round(random.randrange(self.size, dis_height - self.size) )
             
-            
-    
 #class bom
 class bom:
     def __init__(self):
         self.size=10
         self.x=round(random.randrange(self.size, dis_width - self.size) )
         self.y=round(random.randrange(self.size, dis_height - self.size) )
-        
-        
-
+            
 #hàm main
 def gameLoop(sl_bom):
     global head_img
@@ -159,7 +158,6 @@ def gameLoop(sl_bom):
 
     List_Food=[]
     List_Bom=[]
-
     
     #vòng lặp chính
     while not game_over:
@@ -181,7 +179,6 @@ def gameLoop(sl_bom):
                 game_close = False
                 return
             
-
         #sự kiện thoát
         
         for event in pygame.event.get():
@@ -226,7 +223,6 @@ def gameLoop(sl_bom):
             current_direction[0]=current_direction[1]
             current_direction[1]=RIGHT_DOWN
         
-        
         elif ( keys[pygame.K_w])and current_direction[1]!=DOWN:
             Snake1.y_change = -Snake1.speed
             Snake1.x_change = 0
@@ -256,7 +252,6 @@ def gameLoop(sl_bom):
         if Snake1.x >= dis_width or Snake1.x < 0 or Snake1.y >= dis_height or Snake1.y < 0:
             game_close = True
             
-
         #cập nhật tọa độ thay đổi
         Snake1.change()
         #vẽ background
@@ -292,8 +287,6 @@ def gameLoop(sl_bom):
         for b in List_Bom:
             dis.blit(bom_img,(b.x-bom_img.get_width()/2,b.y-bom_img.get_height()/2))
             
-            
-        
         #tạo list tọa độ rắn
         snake_Head = []
         snake_Head.append(Snake1.x)
@@ -303,13 +296,11 @@ def gameLoop(sl_bom):
         if len(Snake1.snake_list) > Snake1.Length_of_snake:
             del Snake1.snake_list[0]
 
-        
          #cắn trúng đuôi
         for x in Snake1.snake_list[:-10]:
             if x == snake_Head:
                 game_close = True
                 
-        
         #vẽ rắn
         our_snake(Snake1.snake_block, Snake1.snake_list,current_direction)
         #Ăn
@@ -334,7 +325,6 @@ def gameLoop(sl_bom):
                 game_close=True
                 lost_sound.play()
 
-        
         message(f"Điểm: {Score}", red,[0,0])
         pygame.display.update()
 
@@ -342,11 +332,8 @@ def gameLoop(sl_bom):
 
     #lost menu
 def lost_menu():
-    #Khoi bao quanh
-    menu_size=pygame.Rect((dis_width-200)//2, (dis_height-250)//4, 200, 250)
-    
     #tao chu
-    thongbao=font_style.render("Bạn đã thua!",True,black)
+    thongbao=font_style.render("BẠN ĐÃ THUA!",True,white)
     play_again=font_style.render("Chơi Lại",True,black)
     back_menu=font_style.render("Trở Về Menu",True,black)
     
@@ -354,7 +341,6 @@ def lost_menu():
     thongbao_rect=thongbao.get_rect(center=(dis_width//2,130))
     play_again_rect=play_again.get_rect(center=(dis_width//2,190))
     back_menu_rect=back_menu.get_rect(center=(dis_width//2,250))
-    
    
    #vong lap chinh
     running=True
@@ -364,47 +350,42 @@ def lost_menu():
                 running=False
                 sys.exit()
                 
-                
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button==1:
                 cursor_position = pygame.mouse.get_pos()
                 cursor_rect = pygame.Rect(cursor_position[0], cursor_position[1], 1, 1)
 
-                
                 if cursor_rect.colliderect(play_again_rect):
-                    
                     return 1
 
-                elif cursor_rect.colliderect(back_menu_rect):
-                    
+                elif cursor_rect.colliderect(back_menu_rect): 
                     return 2
                 
-        # Vẽ menu
-        pygame.draw.rect(dis, blue, menu_size)
-       
+        #ve background menu
+        dis.blit(bg_lost,((dis_width-200)//2,(dis_height-270)//4))
+        
+       #vẽ chữ
         dis.blit(thongbao,thongbao_rect)
         dis.blit(play_again,play_again_rect)
         dis.blit(back_menu,back_menu_rect)
-       
 
         pygame.display.update()
     
-    
-
 #ham menu
 def menu():
     #Khoi bao quanh
-    menu_size=pygame.Rect((dis_width-200)//2, (dis_height-250)//4, 200, 250)
-    
+    menu_size=pygame.Rect((dis_width-200)//2, (dis_height-250)//4, 200, 320)
   #tao chu
+    menu_name=font_style.render("MENU",True,red)
     play_easy=font_style.render("Chơi dễ",True,black)
     play_medium=font_style.render("Chơi Trung bình",True,black)
     play_hard=font_style.render("Chơi khó",True,black)
     button_exit=font_style.render("Thoát game",True,black)
 # tao khoi bao quanh
-    play_easy_rect=play_easy.get_rect(center=(dis_width//2,130))
-    play_medium_rect=play_medium.get_rect(center=(dis_width//2,190))
-    play_hard_rect=play_hard.get_rect(center=(dis_width//2,250))
-    button_exit_rect=button_exit.get_rect(center=(dis_width//2,310))
+    menu_name_rect=menu_name.get_rect(center=((dis_width//2,130)))
+    play_easy_rect=play_easy.get_rect(center=(dis_width//2,190))
+    play_medium_rect=play_medium.get_rect(center=(dis_width//2,250))
+    play_hard_rect=play_hard.get_rect(center=(dis_width//2,310))
+    button_exit_rect=button_exit.get_rect(center=(dis_width//2,370))
    
    #vong lap chinh
     running=True
@@ -414,44 +395,28 @@ def menu():
                 running=False
                 sys.exit()
                 
-                
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button==1:
                 cursor_position = pygame.mouse.get_pos()
                 cursor_rect = pygame.Rect(cursor_position[0], cursor_position[1], 1, 1)
-
                 if cursor_rect.colliderect(play_easy_rect):
-                    
                     gameLoop(5)
                     continue
                 elif cursor_rect.colliderect(play_medium_rect):
-                    
                     gameLoop(10)
                     continue
 
                 elif cursor_rect.colliderect(play_hard_rect):
-                    
                     gameLoop(30)
                     continue
                 elif cursor_rect.colliderect(button_exit_rect):
                     sys.exit()
 
         #background
-        dis.blit(background,(0,0))
-        dis.blit(background,(bg_width,0))
-        dis.blit(background,(bg_width*2,0))
-        dis.blit(background,(0,bg_height))
-        dis.blit(background,(bg_width,bg_height))
-        dis.blit(background,(bg_width*2,bg_height))
-        dis.blit(background,(0,bg_height*2))
-        dis.blit(background,(bg_width,bg_height*2))
-        dis.blit(background,(bg_width*2,bg_height*2))
-
+        dis.blit(bg_menu,(0,0))
         # Vẽ menu
         pygame.draw.rect(dis, yellow, menu_size)
-       
-
-       
-
+        #vẽ chu
+        dis.blit(menu_name,menu_name_rect)
         dis.blit(play_easy,play_easy_rect)
         dis.blit(play_medium,play_medium_rect)
         dis.blit(play_hard,play_hard_rect)
