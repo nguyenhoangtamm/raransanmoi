@@ -170,29 +170,18 @@ def gameLoop(sl_bom):
                 lost_sound_play=True
             
             background_sound.stop()
-            coor= [dis_width / 6, dis_height / 3]
-            message("Bạn đã thua!\n Nhấn C-Chơi lại\n Q-Trở về Menu", white, coor)
- 
-            pygame.display.update()
- 
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
-                        game_over = True
-                        game_close = False
-                        return
-                        
-                        
-                        
-                    elif event.key == pygame.K_c:
-                        gameLoop(sl_bom)
-                        game_over=True
-                        game_close=False
-                        return
-                if event.type==pygame.QUIT:
-                    game_over=True
-                    game_close=False
-                    sys.exit()
+            lost=lost_menu()
+            if lost==1:
+                gameLoop(sl_bom)
+                game_over=True
+                game_close=False
+                return
+            elif lost==2:
+                game_over = True
+                game_close = False
+                return
+            
+
         #sự kiện thoát
         
         for event in pygame.event.get():
@@ -350,21 +339,74 @@ def gameLoop(sl_bom):
         pygame.display.update()
 
         clock.tick(game_speed)
+
+    #lost menu
+def lost_menu():
+    #Khoi bao quanh
+    menu_size=pygame.Rect((dis_width-200)//2, (dis_height-250)//4, 200, 250)
     
+    #tao chu
+    thongbao=font_style.render("Bạn đã thua!",True,black)
+    play_again=font_style.render("Chơi Lại",True,black)
+    back_menu=font_style.render("Trở Về Menu",True,black)
+    
+    #lay khoi bao quanh
+    thongbao_rect=thongbao.get_rect(center=(dis_width//2,130))
+    play_again_rect=play_again.get_rect(center=(dis_width//2,190))
+    back_menu_rect=back_menu.get_rect(center=(dis_width//2,250))
+    
+   
+   #vong lap chinh
+    running=True
+    while running==True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running=False
+                sys.exit()
+                
+                
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button==1:
+                cursor_position = pygame.mouse.get_pos()
+                cursor_rect = pygame.Rect(cursor_position[0], cursor_position[1], 1, 1)
+
+                
+                if cursor_rect.colliderect(play_again_rect):
+                    
+                    return 1
+
+                elif cursor_rect.colliderect(back_menu_rect):
+                    
+                    return 2
+                
+        # Vẽ menu
+        pygame.draw.rect(dis, blue, menu_size)
+       
+        dis.blit(thongbao,thongbao_rect)
+        dis.blit(play_again,play_again_rect)
+        dis.blit(back_menu,back_menu_rect)
+       
+
+        pygame.display.update()
+    
+    
+
 #ham menu
 def menu():
-
-    play_easy=font_style.render("Chơi dễ",True,white)
-    play_easy_rect=play_easy.get_rect(center=(200,130))
-    play_medium=font_style.render("Chơi Trung bình",True,white)
-    play_medium_rect=play_medium.get_rect(center=(200,160))
-
-    play_hard=font_style.render("Chơi khó",True,white)
-    play_hard_rect=play_hard.get_rect(center=(200,190))
-
-    button_exit=font_style.render("Thoát game",True,white)
-    button_exit_rect=button_exit.get_rect(center=(200,220))
-
+    #Khoi bao quanh
+    menu_size=pygame.Rect((dis_width-200)//2, (dis_height-250)//4, 200, 250)
+    
+  #tao chu
+    play_easy=font_style.render("Chơi dễ",True,black)
+    play_medium=font_style.render("Chơi Trung bình",True,black)
+    play_hard=font_style.render("Chơi khó",True,black)
+    button_exit=font_style.render("Thoát game",True,black)
+# tao khoi bao quanh
+    play_easy_rect=play_easy.get_rect(center=(dis_width//2,130))
+    play_medium_rect=play_medium.get_rect(center=(dis_width//2,190))
+    play_hard_rect=play_hard.get_rect(center=(dis_width//2,250))
+    button_exit_rect=button_exit.get_rect(center=(dis_width//2,310))
+   
+   #vong lap chinh
     running=True
     while running==True:
         for event in pygame.event.get():
@@ -393,7 +435,7 @@ def menu():
                 elif cursor_rect.colliderect(button_exit_rect):
                     sys.exit()
 
-
+        #background
         dis.blit(background,(0,0))
         dis.blit(background,(bg_width,0))
         dis.blit(background,(bg_width*2,0))
@@ -403,6 +445,13 @@ def menu():
         dis.blit(background,(0,bg_height*2))
         dis.blit(background,(bg_width,bg_height*2))
         dis.blit(background,(bg_width*2,bg_height*2))
+
+        # Vẽ menu
+        pygame.draw.rect(dis, yellow, menu_size)
+       
+
+       
+
         dis.blit(play_easy,play_easy_rect)
         dis.blit(play_medium,play_medium_rect)
         dis.blit(play_hard,play_hard_rect)
