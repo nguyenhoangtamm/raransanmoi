@@ -353,7 +353,6 @@ def gameLoop(sl_bom):
     
 #ham menu
 def menu():
-    global kiemtra
 
     play_easy=font_style.render("Chơi dễ",True,white)
     play_easy_rect=play_easy.get_rect(center=(200,130))
