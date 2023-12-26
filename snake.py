@@ -3,10 +3,15 @@ import random
 import math
 import sys
 
-#khởi tạo
+#khởi tạo môi trường pygame
 pygame.init()
+#khởi tạo môi trường âm thanh
 pygame.mixer.init()
-# Tao Mau
+#Tạo đối tượng kiểm soát tốc độkhung hình
+clock = pygame.time.Clock()
+#FPS
+game_speed = 60
+#Tạo màu
 white = (255, 255, 255)
 yellow = (255, 255, 102)
 black = (0, 0, 0)
@@ -24,6 +29,7 @@ LEFT_UP=315.0
 LEFT_DOWN=225.0
 RIGHT_UP=45.0
 RIGHT_DOWN=135.0
+#góc quay
 angle=0
 
 #kichthuoc
@@ -42,7 +48,7 @@ bg_menu=pygame.transform.scale(bg_menu,(dis_width,dis_height))
 #background lost
 bg_lost=pygame.transform.scale(bg_menu,(200,270))
 
-#ten tro choi
+#tên trò chơi
 dis = pygame.display.set_mode((dis_width, dis_height))
 pygame.display.set_caption('Game Rắn Săn Mồi')
 
@@ -50,19 +56,13 @@ pygame.display.set_caption('Game Rắn Săn Mồi')
 icon_game=pygame.image.load(r"image\icon.jpg")
 pygame.display.set_icon(icon_game)
 
-# #load dau
+# #load đầu rắn
 head_img_goc=pygame.image.load(r"image\dauran.png")
-
 head_img_goc=pygame.transform.scale(head_img_goc,(45,45))
 head_img=head_img_goc
 #load bom
 bom_img=pygame.image.load(r"image\bom.png")
 bom_img=pygame.transform.scale(bom_img,(40,40))
-
-
-clock = pygame.time.Clock()
-#cac tham so
-game_speed = 60
 
 #font
 font_style = pygame.font.Font("font\\aachenb.ttf", 25)
@@ -84,19 +84,14 @@ class Snake:
         self.speed=speed
         self.x_speed=0
         self.y_speed=0
-        
+    
+    #hàm tạo vị trí bắt đầu
     def start(self,direction):
         self.direction=direction
         if direction=="RIGHT":
             self.x = ((dis_width/2)-9)//10*10+dis_width/2
             self.y = ((dis_height/2)-9)//10*10
-        elif direction=="LEFT":
-            self.x = ((dis_width/2)-9)//10*10-dis_width/2
-            self.y = ((dis_height/2)-9)//10*10
-        elif direction=="BOTTOM":
-            self.x = ((dis_width/2)-9)//10*10
-            self.y = ((dis_height/2)-9)//10*10+dis_height/2
-
+    #cặp nhật tọa độ thay đổi
     def change(self):
         self.y += (self.y_change +self.y_speed)
         self.x += (self.x_change +self.x_speed)
@@ -110,6 +105,7 @@ def our_snake(snake_block, snake_list,current_direction):
     rotated_head  = pygame.transform.rotate( head_img , angle)
     rotated_rect = rotated_head.get_rect(center=head_rect.center)
     dis.blit(rotated_head,(rotated_rect.topleft))
+    #vẽ thân rắn
     for x in snake_list[:-5]:
         pygame.draw.circle(dis, yellow,( x[0], x[1]), snake_block,0)
 
@@ -153,7 +149,7 @@ def gameLoop(sl_bom):
     game_over = False
     game_close = False
     Snake1=Snake(10,4)
-    Snake1.start("RIGHT")
+    Snake1.start("LEFT")
     current_direction=[LEFT,LEFT]
 
     List_Food=[]
@@ -200,8 +196,8 @@ def gameLoop(sl_bom):
                 Speed_Score+=1
         else:
             game_speed=30
+
         #Di chuyển
-        
         if ((keys[pygame.K_a] and keys[pygame.K_w]))and current_direction[1]!=RIGHT_DOWN :
             Snake1.x_change = -Snake1.speed/math.sqrt(2)
             Snake1.y_change = -Snake1.speed/math.sqrt(2)
@@ -274,16 +270,16 @@ def gameLoop(sl_bom):
 
         if len(List_Food)<100:
             List_Food.append(Food)
-        # ve thuc an
+        # vẽ thức ăn
         for f in List_Food:
             pygame.draw.circle(dis, f.color, (f.x, f.y),f.size)
-        #tao bom
+        #tạo bom
         
         if len(List_Bom)<sl_bom:
             Bom=bom()
             if ((Bom.x<Snake1.x-2*Bom.size or Bom.x>Snake1.x+2*Bom.size) and (Bom.y<Snake1.y-2*Bom.size or Bom.y>Snake1.y+2*Bom.size)):
                 List_Bom.append(Bom)
-        #ve bom
+        #vẽ bom
         for b in List_Bom:
             dis.blit(bom_img,(b.x-bom_img.get_width()/2,b.y-bom_img.get_height()/2))
             
@@ -318,7 +314,7 @@ def gameLoop(sl_bom):
                     sound_belch.play()
                     Score+=10
                     Snake1.Length_of_snake += 5
-        #An bom
+        #Ăn bom
         for b in List_Bom:
             distance=math.sqrt((Snake1.x-b.x)**2+(Snake1.y-b.y)**2)
             if distance<((Snake1.snake_block)*(0.5)+b.size):
@@ -332,17 +328,17 @@ def gameLoop(sl_bom):
 
     #lost menu
 def lost_menu():
-    #tao chu
+    #tạo chữ
     thongbao=font_style.render("BẠN ĐÃ THUA!",True,white)
     play_again=font_style.render("Chơi Lại",True,black)
     back_menu=font_style.render("Trở Về Menu",True,black)
     
-    #lay khoi bao quanh
+    #lấy khối bao quanh
     thongbao_rect=thongbao.get_rect(center=(dis_width//2,130))
     play_again_rect=play_again.get_rect(center=(dis_width//2,190))
     back_menu_rect=back_menu.get_rect(center=(dis_width//2,250))
    
-   #vong lap chinh
+   #vòng lập chính
     running=True
     while running==True:
         for event in pygame.event.get():
@@ -360,7 +356,7 @@ def lost_menu():
                 elif cursor_rect.colliderect(back_menu_rect): 
                     return 2
                 
-        #ve background menu
+        #vẽ background menu
         dis.blit(bg_lost,((dis_width-200)//2,(dis_height-270)//4))
         
        #vẽ chữ
@@ -370,31 +366,32 @@ def lost_menu():
 
         pygame.display.update()
     
-#ham menu
+#hàm menu
 def menu():
     #Khoi bao quanh
     menu_size=pygame.Rect((dis_width-200)//2, (dis_height-250)//4, 200, 320)
-  #tao chu
+  #tạo chữ
     menu_name=font_style.render("MENU",True,red)
     play_easy=font_style.render("Chơi dễ",True,black)
     play_medium=font_style.render("Chơi Trung bình",True,black)
     play_hard=font_style.render("Chơi khó",True,black)
     button_exit=font_style.render("Thoát game",True,black)
-# tao khoi bao quanh
+# tạo khối bao quanh
     menu_name_rect=menu_name.get_rect(center=((dis_width//2,130)))
     play_easy_rect=play_easy.get_rect(center=(dis_width//2,190))
     play_medium_rect=play_medium.get_rect(center=(dis_width//2,250))
     play_hard_rect=play_hard.get_rect(center=(dis_width//2,310))
     button_exit_rect=button_exit.get_rect(center=(dis_width//2,370))
    
-   #vong lap chinh
+   #vòng lặp chính
     running=True
     while running==True:
+        #bắt sự kiện thoát
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running=False
                 sys.exit()
-                
+            #bắt sự kiện lựa chọn menu
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button==1:
                 cursor_position = pygame.mouse.get_pos()
                 cursor_rect = pygame.Rect(cursor_position[0], cursor_position[1], 1, 1)
@@ -415,7 +412,7 @@ def menu():
         dis.blit(bg_menu,(0,0))
         # Vẽ menu
         pygame.draw.rect(dis, yellow, menu_size)
-        #vẽ chu
+        #vẽ chữ
         dis.blit(menu_name,menu_name_rect)
         dis.blit(play_easy,play_easy_rect)
         dis.blit(play_medium,play_medium_rect)
