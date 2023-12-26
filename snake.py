@@ -149,7 +149,7 @@ def gameLoop(sl_bom):
     game_over = False
     game_close = False
     Snake1=Snake(10,4)
-    Snake1.start("LEFT")
+    Snake1.start("RIGHT")
     current_direction=[LEFT,LEFT]
 
     List_Food=[]
