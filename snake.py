@@ -82,8 +82,6 @@ class Snake:
         self.x_change=0
         self.y_change=0
         self.speed=speed
-        self.x_speed=0
-        self.y_speed=0
     
     #hàm tạo vị trí bắt đầu
     def start(self,direction):
@@ -93,8 +91,8 @@ class Snake:
             self.y = ((dis_height/2)-9)//10*10
     #cặp nhật tọa độ thay đổi
     def change(self):
-        self.y += (self.y_change +self.y_speed)
-        self.x += (self.x_change +self.x_speed)
+        self.y += (self.y_change )
+        self.x += (self.x_change )
 #hàm vẽ rắn
 def our_snake(snake_block, snake_list,current_direction):
     global head_img
