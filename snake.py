@@ -319,9 +319,10 @@ def gameLoop(sl_bom):
                 game_close=True
                 lost_sound.play()
 
+        #hiển thị điểm số
         message(f"Điểm: {Score}", red,[0,0])
         pygame.display.update()
-
+        #kiểm soát tốc độ khung hình
         clock.tick(game_speed)
 
     #lost menu
