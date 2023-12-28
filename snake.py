@@ -321,6 +321,7 @@ def gameLoop(sl_bom):
 
         #hiển thị điểm số
         message(f"Điểm: {Score}", red,[0,0])
+        #cập nhật lại màn hình
         pygame.display.update()
         #kiểm soát tốc độ khung hình
         clock.tick(game_speed)
